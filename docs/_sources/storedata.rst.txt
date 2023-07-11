@@ -1,0 +1,26 @@
+storedata package
+=================
+
+.. automodule:: storedata
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+storedata.db\_backends module
+-----------------------------
+
+.. automodule:: storedata.db_backends
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+storedata.helper module
+-----------------------
+
+.. automodule:: storedata.helper
+   :members:
+   :undoc-members:
+   :show-inheritance:

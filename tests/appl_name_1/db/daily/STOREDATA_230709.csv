@@ -1,0 +1,2 @@
+date_time(yymmdd_ms)[int],application[text],user[text],col1_as890sd[int],col2_b8232[text],col3_c3234[file]
+23071111766287,appl_name_1,jkris,1000,i_7,C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\tests\appl_name_1\db\artifacts\230709\11766287\storedata_test.py

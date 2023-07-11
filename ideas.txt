@@ -1,0 +1,59 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jul  7 01:21:39 2023
+
+@author: jkris
+"""
+
+
+Ideas:
+
+1. Create default option which is on for all simulations of certain type
+    a. No user intervention and works in all use-cases
+    b. Easy API to integrate into postprocessing code
+
+2. Add flag for detailed or user-feedback data extraction (for good models)
+
+3. Ability to add to 2 different appls in same script,
+    or same appl in 2 different scripts (not same time)
+
+4. Prompt user input before simulation: "What changed?"
+    a. User input name and value of change
+
+5. include info about using sqlite-web to browse and export
+
+
+
+Folder Structure:
+
+/.../storedata/{appl}
+/.../storedata/{appl}/live
+/.../storedata/{appl}/live/{timestamp(MS)}
+/.../storedata/{appl}/live/{timestamp(MS)}/{contents}
+/.../storedata/{appl}/db/
+/.../storedata/{appl}/db/{full.sqlite}
+/.../storedata/{appl}/db/daily
+/.../storedata/{appl}/db/daily/{yymmdd.sqlite}
+/.../storedata/{appl}/db/artifacts/
+/.../storedata/{appl}/db/artifacts/{yymmdd}/{MS}/{contents}
+
+
+[FUTURE] SQLite Process:
+
+1. Each run saved in timestamped folder in "live" directory
+    a. Parameters saved in CSV file called "storedata_params.csv"
+    b. Artifacts in same folder with filename referenced in "params.csv"
+
+2. Daily scheduled process to convert params and artifacts to .sqlite
+    a. Convert each run and add to a daily database
+    b. Merge new daily database with full history database
+    c. Keep track of db merges with DVC (or similar tool)?
+    d. 4 options for special data: file, zip, blob, or json
+
+3. Create sub-table in db if repeated values are present in column
+
+
+
+
+
+

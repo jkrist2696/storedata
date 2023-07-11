@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>storedata package &mdash; storedata 0.0.3 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to storedata&#39;s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            storedata
+          </a>
+              <div class="version">
+                0.0.3
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">storedata package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#storedata.create_run"><code class="docutils literal notranslate"><span class="pre">create_run()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storedata.daily_data_to_db"><code class="docutils literal notranslate"><span class="pre">daily_data_to_db()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storedata.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storedata.run_daily_update"><code class="docutils literal notranslate"><span class="pre">run_daily_update()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storedata.save_data"><code class="docutils literal notranslate"><span class="pre">save_data()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-storedata.db_backends">storedata.db_backends module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.db_backends.db_csv"><code class="docutils literal notranslate"><span class="pre">db_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.db_backends.db_files"><code class="docutils literal notranslate"><span class="pre">db_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.db_backends.get_db_paths"><code class="docutils literal notranslate"><span class="pre">get_db_paths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-storedata.helper">storedata.helper module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.helper.check_live_date"><code class="docutils literal notranslate"><span class="pre">check_live_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.helper.create_dirs"><code class="docutils literal notranslate"><span class="pre">create_dirs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.helper.create_lockfile"><code class="docutils literal notranslate"><span class="pre">create_lockfile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.helper.delete_lockfile"><code class="docutils literal notranslate"><span class="pre">delete_lockfile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.helper.format_name"><code class="docutils literal notranslate"><span class="pre">format_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.helper.get_total_ms"><code class="docutils literal notranslate"><span class="pre">get_total_ms()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.helper.wait_lockfile"><code class="docutils literal notranslate"><span class="pre">wait_lockfile()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">storedata</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">storedata package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/storedata.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-storedata">
+<span id="storedata-package"></span><h1>storedata package<a class="headerlink" href="#module-storedata" title="Permalink to this heading"></a></h1>
+<p>Created on Fri Jul  7 03:06:13 2023</p>
+<p>&#64;author: jkris</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.create_run">
+<span class="sig-prename descclassname"><span class="pre">storedata.</span></span><span class="sig-name descname"><span class="pre">create_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/storedata.html#create_run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.create_run" title="Permalink to this definition"></a></dt>
+<dd><p>Create a directory for a new run in &quot;live&quot; data gathering folder.
+Metadata is saved to the run such as user, date+time, and application name.
+The datapath directory name is taken as the appl name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datapath</strong> (<em>str</em>) -- Full path to data storage directory</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>rundirpath</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.daily_data_to_db">
+<span class="sig-prename descclassname"><span class="pre">storedata.</span></span><span class="sig-name descname"><span class="pre">daily_data_to_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata.html#daily_data_to_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.daily_data_to_db" title="Permalink to this definition"></a></dt>
+<dd><p>Move all data in &quot;live&quot; folder to the &quot;db&quot; folder by running
+the CSV and Files database backends.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datapath</strong> (<em>str</em>) -- Full path to data storage directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.get_data">
+<span class="sig-prename descclassname"><span class="pre">storedata.</span></span><span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata.html#get_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.get_data" title="Permalink to this definition"></a></dt>
+<dd><p>Get data as Pandas DataFrame object from database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapath</strong> (<em>str</em>) -- Full path to data storage directory</p></li>
+<li><p><strong>names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- Column names to pull from database</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>dataframe</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pandas DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.run_daily_update">
+<span class="sig-prename descclassname"><span class="pre">storedata.</span></span><span class="sig-name descname"><span class="pre">run_daily_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata.html#run_daily_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.run_daily_update" title="Permalink to this definition"></a></dt>
+<dd><p>Move all data in &quot;live&quot; folder to the &quot;db&quot; folder
+when the &quot;.date&quot; file contains a previous date.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapath</strong> (<em>str</em>) -- Full path to data storage directory</p></li>
+<li><p><strong>date</strong> (<em>int</em>) -- YYMMDD formatted date</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.save_data">
+<span class="sig-prename descclassname"><span class="pre">storedata.</span></span><span class="sig-name descname"><span class="pre">save_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">runpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtypes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata.html#save_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.save_data" title="Permalink to this definition"></a></dt>
+<dd><p>Save data to a temporary run folder as CSV format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>runpath</strong> (<em>str</em>) -- Full path to run directory</p></li>
+<li><p><strong>names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of parameters names to save</p></li>
+<li><p><strong>values</strong> (<em>list</em>) -- List of parameters values to save</p></li>
+<li><p><strong>dtypes</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of parameters types (dictates saving method)
+Options = [int, float, text/str, blob, file, zip, json]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-storedata.db_backends">
+<span id="storedata-db-backends-module"></span><h2>storedata.db_backends module<a class="headerlink" href="#module-storedata.db_backends" title="Permalink to this heading"></a></h2>
+<p>Created on Mon Jul 10 13:39:55 2023</p>
+<p>&#64;author: jkris</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.db_backends.db_csv">
+<span class="sig-prename descclassname"><span class="pre">storedata.db_backends.</span></span><span class="sig-name descname"><span class="pre">db_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/db_backends.html#db_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.db_backends.db_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Move parameters in temporary data storage for each run to a database stored as a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapath</strong> (<em>str</em>) -- Full path to data storage</p></li>
+<li><p><strong>date</strong> (<em>str</em>) -- YYMMDD formatted date</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.db_backends.db_files">
+<span class="sig-prename descclassname"><span class="pre">storedata.db_backends.</span></span><span class="sig-name descname"><span class="pre">db_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/db_backends.html#db_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.db_backends.db_files" title="Permalink to this definition"></a></dt>
+<dd><p>Move parameters in temporary data storage for each run to a cataloged files folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapath</strong> (<em>str</em>) -- Full path to data storage</p></li>
+<li><p><strong>date</strong> (<em>str</em>) -- YYMMDD formatted data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.db_backends.get_db_paths">
+<span class="sig-prename descclassname"><span class="pre">storedata.db_backends.</span></span><span class="sig-name descname"><span class="pre">get_db_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/db_backends.html#get_db_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.db_backends.get_db_paths" title="Permalink to this definition"></a></dt>
+<dd><p>Get many important nested paths in DB to save lines from many path.joins</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datapath</strong> (<em>str</em>) -- Full path to data storage directory</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-storedata.helper">
+<span id="storedata-helper-module"></span><h2>storedata.helper module<a class="headerlink" href="#module-storedata.helper" title="Permalink to this heading"></a></h2>
+<p>Created on Fri Jul  7 03:44:56 2023</p>
+<p>&#64;author: jkris</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.helper.check_live_date">
+<span class="sig-prename descclassname"><span class="pre">storedata.helper.</span></span><span class="sig-name descname"><span class="pre">check_live_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/storedata/helper.html#check_live_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.helper.check_live_date" title="Permalink to this definition"></a></dt>
+<dd><p>Check and return the contents of &quot;.date&quot; file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datepath</strong> (<em>str</em>) -- Full path to &quot;.date&quot; file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>lastdate</strong> -- Date as &quot;YYMMDD&quot; as read from &quot;.date&quot; file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.helper.create_dirs">
+<span class="sig-prename descclassname"><span class="pre">storedata.helper.</span></span><span class="sig-name descname"><span class="pre">create_dirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relpaths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/helper.html#create_dirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.helper.create_dirs" title="Permalink to this definition"></a></dt>
+<dd><p>Create a list of directories after check if each already exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basepath</strong> (<em>str</em>) -- Full path to create the directories in</p></li>
+<li><p><strong>relpaths</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- Relative locations in relation to basepath to make directories</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.helper.create_lockfile">
+<span class="sig-prename descclassname"><span class="pre">storedata.helper.</span></span><span class="sig-name descname"><span class="pre">create_lockfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lockdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/helper.html#create_lockfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.helper.create_lockfile" title="Permalink to this definition"></a></dt>
+<dd><p>Create a &quot;.lock&quot; file in a directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lockdir</strong> (<em>str</em>) -- Directory to create lock file in</p></li>
+<li><p><strong>reason</strong> (<em>str</em>) -- Reason for locking directory (written in lock file)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.helper.delete_lockfile">
+<span class="sig-prename descclassname"><span class="pre">storedata.helper.</span></span><span class="sig-name descname"><span class="pre">delete_lockfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lockdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/helper.html#delete_lockfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.helper.delete_lockfile" title="Permalink to this definition"></a></dt>
+<dd><p>Remove &quot;.lock&quot; file from a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lockdir</strong> (<em>str</em>) -- Directory to remove lock file from</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.helper.format_name">
+<span class="sig-prename descclassname"><span class="pre">storedata.helper.</span></span><span class="sig-name descname"><span class="pre">format_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/helper.html#format_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.helper.format_name" title="Permalink to this definition"></a></dt>
+<dd><p>Format the name of something by keeping only letters, numbers,
+underscores, and parenthesis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- Any string to auto-format into a nicer name</p></li>
+<li><p><strong>dtype</strong> (<em>Union</em><em>[</em><em>str</em><em>,</em><em>None</em><em>]</em>) -- Type string to put in brackets after name</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.helper.get_total_ms">
+<span class="sig-prename descclassname"><span class="pre">storedata.helper.</span></span><span class="sig-name descname"><span class="pre">get_total_ms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datetime_obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/helper.html#get_total_ms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.helper.get_total_ms" title="Permalink to this definition"></a></dt>
+<dd><p>Get total number of milliseconds past in the day from datetime object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>datetime_obj</strong> -- datetime object with hour, minute, second, and microsecond properties</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.helper.wait_lockfile">
+<span class="sig-prename descclassname"><span class="pre">storedata.helper.</span></span><span class="sig-name descname"><span class="pre">wait_lockfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lockdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/helper.html#wait_lockfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.helper.wait_lockfile" title="Permalink to this definition"></a></dt>
+<dd><p>Wait for &quot;.lock&quot; file to be removed at directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lockdir</strong> (<em>str</em>) -- Directory to check for lock file in</p></li>
+<li><p><strong>timeout</strong> (<em>int</em>) -- Maximum time to wait for .lock file to be removed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to storedata&#39;s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, jkris.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
