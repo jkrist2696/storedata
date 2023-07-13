@@ -40,7 +40,7 @@ def create_run(datapath: str) -> str:
     # This could cause an issue if 2 concurrent runs create directories
     create_dirs(runinfo["path"], relpaths)
     wait_lockfile(datapath)
-    run_daily_update(datapath, int(date))
+    run_update(datapath)
     names = ["date_time(yymmdd_ms)", "application", "user"]
     values = [runinfo["date"] + runinfo["time"], applname, user]
     dtypes = ["int", "text", "text"]
@@ -78,7 +78,7 @@ def save_data(runpath: str, names: list[str], values: list, dtypes: list[str]):
         for i, name in enumerate(names):
             name = format_name(name, dtypes[i])
             paramfile.write(f"{name},{values[i]}\n")
-            if not dtypes[i] in ["file", "blob", "zip"]:
+            if dtypes[i] not in ["file", "blob", "zip"]:
                 continue
             _none, filename = path.split(values[i])
             copypath = path.join(runpath, filename)
@@ -145,17 +145,17 @@ def daily_data_to_db(datapath: str):
     # add conversion of raw files to db based on dtype
     # Copy artifacts
     datepath = path.join(datapath, "live", ".date")
-    lastdate = check_live_date(datepath)
-    db_files(datapath, str(lastdate))
+    lastdate = str(check_live_date(datepath))
+    db_files(datapath, lastdate)
     # if db is "csv":  , db: str = "csv"
     # Merge all CSVs into dataframe
-    db_csv(datapath, str(lastdate))
+    db_csv(datapath, lastdate)
     livepath = path.join(datapath, "live")
     rmtree(livepath)
     mkdir(livepath)
 
 
-def run_daily_update(datapath: str, date: int):
+def run_update(datapath: str, force: bool = False):
     """Move all data in "live" folder to the "db" folder
     when the ".date" file contains a previous date.
 
@@ -165,13 +165,15 @@ def run_daily_update(datapath: str, date: int):
         Full path to data storage directory
     date : int
         YYMMDD formatted date
+    force : bool
+        True forces the db update even if it is not the next day
     """
+    date = int(datetime.now().strftime("%y%m%d"))
     datepath = path.join(datapath, "live", ".date")
     if not path.exists(datepath):
         with open(datepath, "w", encoding="ascii") as datefile:
             datefile.write(f"{date}")
-        return
-    if check_live_date(datepath) == date:
+    if (check_live_date(datepath) == date) and (not force):
         return
     create_lockfile(datapath, "daily_data_to_db")
     daily_data_to_db(datapath)

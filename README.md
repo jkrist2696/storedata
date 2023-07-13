@@ -1,6 +1,6 @@
 # storedata
 
-Python package used to store and retrieve data from a rudementary file-system database.
+Python package used to store and retrieve data from a rudimentary file-system database.
 
 ## Read The Docs:
 

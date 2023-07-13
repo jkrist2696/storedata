@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>storedata.db_backends &mdash; storedata 0.0.3 documentation</title>
+  <title>storedata.db_backends &mdash; storedata 0.0.6 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             storedata
           </a>
               <div class="version">
-                0.0.3
+                0.0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -100,7 +100,11 @@
 <span class="sd">        YYMMDD formatted date</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">livepath</span><span class="p">,</span> <span class="n">dbdirpath</span><span class="p">,</span> <span class="n">dailypath</span> <span class="o">=</span> <span class="n">get_db_paths</span><span class="p">(</span><span class="n">datapath</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
-    <span class="n">df_daily</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">dbdailypath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dailypath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;STOREDATA_</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dbdailypath</span><span class="p">):</span>
+        <span class="n">df_daily</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">dbdailypath</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df_daily</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">livepath</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">livepath</span><span class="p">,</span> <span class="n">dirname</span><span class="p">)):</span>
             <span class="k">continue</span>
@@ -110,8 +114,9 @@
             <span class="n">df_daily</span> <span class="o">=</span> <span class="n">df_run</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">df_daily</span> <span class="o">=</span> <span class="n">concat</span><span class="p">([</span><span class="n">df_daily</span><span class="p">,</span> <span class="n">df_run</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">dbdailypath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dailypath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;STOREDATA_</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
+
     <span class="n">df_daily</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">dbdailypath</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s2">&quot;NaN&quot;</span><span class="p">)</span>
+    <span class="c1"># Make below a separate function</span>
     <span class="n">dbpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dbdirpath</span><span class="p">,</span> <span class="s2">&quot;STOREDATA_DB.csv&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dbpath</span><span class="p">):</span>
         <span class="n">df_db</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">dbpath</span><span class="p">)</span>
@@ -134,7 +139,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">livepath</span><span class="p">,</span> <span class="n">_none</span><span class="p">,</span> <span class="n">_none</span><span class="p">,</span> <span class="n">artpath</span> <span class="o">=</span> <span class="n">get_db_paths</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
     <span class="n">dateartpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">artpath</span><span class="p">,</span> <span class="n">date</span><span class="p">)</span>
-    <span class="n">mkdir</span><span class="p">(</span><span class="n">dateartpath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dateartpath</span><span class="p">):</span>
+        <span class="n">mkdir</span><span class="p">(</span><span class="n">dateartpath</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">timedir</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">livepath</span><span class="p">):</span>
         <span class="n">rundir</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">livepath</span><span class="p">,</span> <span class="n">timedir</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">rundir</span><span class="p">):</span>

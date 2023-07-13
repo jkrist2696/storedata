@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>storedata package &mdash; storedata 0.0.3 documentation</title>
+  <title>storedata package &mdash; storedata 0.0.6 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -34,7 +34,7 @@
             storedata
           </a>
               <div class="version">
-                0.0.3
+                0.0.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -50,7 +50,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#storedata.create_run"><code class="docutils literal notranslate"><span class="pre">create_run()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#storedata.daily_data_to_db"><code class="docutils literal notranslate"><span class="pre">daily_data_to_db()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#storedata.get_data"><code class="docutils literal notranslate"><span class="pre">get_data()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#storedata.run_daily_update"><code class="docutils literal notranslate"><span class="pre">run_daily_update()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#storedata.run_update"><code class="docutils literal notranslate"><span class="pre">run_update()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#storedata.save_data"><code class="docutils literal notranslate"><span class="pre">save_data()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-storedata.db_backends">storedata.db_backends module</a><ul>
@@ -153,8 +153,8 @@ the CSV and Files database backends.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="storedata.run_daily_update">
-<span class="sig-prename descclassname"><span class="pre">storedata.</span></span><span class="sig-name descname"><span class="pre">run_daily_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata.html#run_daily_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.run_daily_update" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="storedata.run_update">
+<span class="sig-prename descclassname"><span class="pre">storedata.</span></span><span class="sig-name descname"><span class="pre">run_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata.html#run_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.run_update" title="Permalink to this definition"></a></dt>
 <dd><p>Move all data in &quot;live&quot; folder to the &quot;db&quot; folder
 when the &quot;.date&quot; file contains a previous date.</p>
 <dl class="field-list simple">
@@ -162,6 +162,7 @@ when the &quot;.date&quot; file contains a previous date.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>datapath</strong> (<em>str</em>) -- Full path to data storage directory</p></li>
 <li><p><strong>date</strong> (<em>int</em>) -- YYMMDD formatted date</p></li>
+<li><p><strong>force</strong> (<em>bool</em>) -- True forces the db update even if it is not the next day</p></li>
 </ul>
 </dd>
 </dl>

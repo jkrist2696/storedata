@@ -1,0 +1,16 @@
+13-07-23 01:06:06 cleandoc INFO ooooooooooooooo Checking File (1/3): db_backends.py oooooooooooooooo
+
+13-07-23 01:06:07 cleandoc INFO --------------------------- Black Output ---------------------------
+
+reformatted C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\db_backends.py
+
+All done! ✨ 🍰 ✨
+1 file reformatted.
+
+13-07-23 01:06:29 cleandoc INFO --------------------------- Mypy Output ----------------------------
+C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\__init__.py:124: error: Invalid index type "list[int]" for "Series[Any]"; expected type "Union[list[str], Index, Series[Any], slice, Series[bool], ndarray[Any, dtype[bool_]], list[bool], tuple[Union[Any, slice], ...]]"  [index]
+Found 1 error in 1 file (checked 1 source file)
+
+
+13-07-23 01:06:29 cleandoc ERROR C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\db_backends.py
+

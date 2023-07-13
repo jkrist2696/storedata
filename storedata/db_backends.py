@@ -15,7 +15,8 @@ from pandas import DataFrame, read_csv, concat
 
 
 def db_csv(datapath: str, date: str):
-    """Move parameters in temporary data storage for each run to a database stored as a CSV file.
+    """Move parameters in temporary data storage for each run to a
+    database stored as a CSV file.
 
     Parameters
     ----------
@@ -25,7 +26,11 @@ def db_csv(datapath: str, date: str):
         YYMMDD formatted date
     """
     livepath, dbdirpath, dailypath = get_db_paths(datapath)[0:3]
-    df_daily = DataFrame()
+    dbdailypath = path.join(dailypath, f"STOREDATA_{date}.csv")
+    if path.exists(dbdailypath):
+        df_daily = read_csv(dbdailypath)
+    else:
+        df_daily = DataFrame()
     for dirname in listdir(livepath):
         if not path.isdir(path.join(livepath, dirname)):
             continue
@@ -35,8 +40,9 @@ def db_csv(datapath: str, date: str):
             df_daily = df_run
         else:
             df_daily = concat([df_daily, df_run], axis=0, ignore_index=False)
-    dbdailypath = path.join(dailypath, f"STOREDATA_{date}.csv")
+
     df_daily.to_csv(dbdailypath, index=False, na_rep="NaN")
+    # Make below a separate function
     dbpath = path.join(dbdirpath, "STOREDATA_DB.csv")
     if path.exists(dbpath):
         df_db = read_csv(dbpath)
@@ -48,7 +54,8 @@ def db_csv(datapath: str, date: str):
 
 
 def db_files(datapath: str, date: str):
-    """Move parameters in temporary data storage for each run to a cataloged files folder.
+    """Move parameters in temporary data storage for each run to a
+    cataloged files folder.
 
     Parameters
     ----------
@@ -59,7 +66,8 @@ def db_files(datapath: str, date: str):
     """
     livepath, _none, _none, artpath = get_db_paths(datapath)
     dateartpath = path.join(artpath, date)
-    mkdir(dateartpath)
+    if not path.exists(dateartpath):
+        mkdir(dateartpath)
     for timedir in listdir(livepath):
         rundir = path.join(livepath, timedir)
         if not path.isdir(rundir):
