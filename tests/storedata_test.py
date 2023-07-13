@@ -40,7 +40,7 @@ for applname in ["appl_name_1", "appl_name_2"]:
         csvpath = sd.save_data(runpath, names1, values, dtypes)
     names2 = ["col4_3rj-=QEE", "col2_B8232=-", "col5_09qw8e09"]
     sd.run_update(datapath, force=True)
-    sleep(60)
+    sleep(1)
     for i in range(2):
         runpath = sd.create_run(datapath)
         csvpath = sd.save_data(runpath, names2, values, dtypes)

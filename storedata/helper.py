@@ -10,10 +10,11 @@ from os import path, mkdir, remove, getlogin
 from time import sleep
 from typing import Union
 from datetime import datetime
+from pandas import concat, DataFrame, read_csv
 
 
 def get_total_ms(datetime_obj):
-    """Get total number of milliseconds past in the day from datetime object
+    """Get total number of microseconds past in the day from datetime object
 
     Parameters
     ----------
@@ -26,7 +27,7 @@ def get_total_ms(datetime_obj):
         + datetime_obj.second * 1000000
         + datetime_obj.microsecond
     )
-    return round(microseconds / 1000)
+    return microseconds
 
 
 def get_date_time():
@@ -38,7 +39,7 @@ def get_date_time():
     date : str
         format YYMMDD
     time : str
-        milliseconds
+        microseconds
     """
     now = datetime.now()
     date = now.strftime("%y%m%d")
@@ -104,9 +105,50 @@ def create_dirs(basepath: str, relpaths: list[str]):
             mkdir(fullpath)
 
 
-def create_lockfile(lockdir: str, reason: str):
-    """Create a ".lock" file in a directory
+def read_csv_df(csvpath):
+    """Read a csv file as a dataframe if the csv path exists.
+    Otherwise, output empty dataframe.
 
+    Parameters
+    ----------
+    csvpath : str
+        Full path to csv file
+
+    Returns
+    -------
+    dataframe : DataFrame
+    """
+    dataframe = DataFrame()
+    if path.exists(csvpath):
+        dataframe = read_csv(csvpath)
+    return dataframe
+
+
+def set_or_concat_df(dataframe1, dataframe2):
+    """
+    Concatenate dataframe2 below dataframe1 if dataframe1 has length greater
+    than 0. Otherwise, set dataframe1 equal to dataframe2.
+    Parameters
+    ----------
+    dataframe1 : DataFrame
+        Check this df length
+    dataframe2 : DataFrame
+        Concatenate this df below or use to set equal
+    Returns
+    -------
+    dataframe1 : DataFrame
+    """
+
+    if len(dataframe1) == 0:
+        dataframe1 = dataframe2
+    else:
+        dataframe1 = concat([dataframe1, dataframe2], axis=0, ignore_index=False)
+    return dataframe1
+
+
+def create_lockfile(lockdir: str, reason: str):
+    """
+    Create a ".lock" file in a directory
     Parameters
     ----------
     lockdir : str

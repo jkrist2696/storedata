@@ -14,8 +14,8 @@ project = 'storedata'
 copyright = '2023, jkris'
 author = 'jkris'
 
-version = '0.0.7'
-release = '0.0.7'
+version = '0.0.9'
+release = '0.0.9'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

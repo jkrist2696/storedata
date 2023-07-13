@@ -1,16 +1,16 @@
-13-07-23 01:48:29 cleandoc INFO ooooooooooooooo Skipping File (1/3): db_backends.py oooooooooooooooo
+13-07-23 02:30:41 cleandoc INFO ooooooooooooooo Skipping File (1/3): db_backends.py oooooooooooooooo
 
-13-07-23 01:48:29 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\db_backends.py
+13-07-23 02:30:41 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\db_backends.py
 
-13-07-23 01:48:29 cleandoc INFO oooooooooooooooooo Checking File (2/3): helper.py oooooooooooooooooo
+13-07-23 02:30:41 cleandoc INFO oooooooooooooooooo Checking File (2/3): helper.py oooooooooooooooooo
 
-13-07-23 01:48:33 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\helper.py
+13-07-23 02:30:50 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\helper.py
 
-13-07-23 01:48:33 cleandoc INFO ooooooooooooooooo Checking File (3/3): __init__.py ooooooooooooooooo
+13-07-23 02:30:50 cleandoc INFO ooooooooooooooooo Checking File (3/3): __init__.py ooooooooooooooooo
 
-13-07-23 01:48:41 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\__init__.py
+13-07-23 02:30:59 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\storedata\__init__.py
 
-13-07-23 01:48:41 cleandoc INFO ooooooooooooooooooooooooo Gen Docs Output oooooooooooooooooooooooooo
+13-07-23 02:30:59 cleandoc INFO ooooooooooooooooooooooooo Gen Docs Output oooooooooooooooooooooooooo
 
-13-07-23 01:48:48 cleandoc INFO Docs Location: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\docs
+13-07-23 02:31:05 cleandoc INFO Docs Location: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\storedata\docs
 

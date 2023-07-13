@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>storedata.helper &mdash; storedata 0.0.7 documentation</title>
+  <title>storedata.helper &mdash; storedata 0.0.9 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             storedata
           </a>
               <div class="version">
-                0.0.7
+                0.0.9
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -85,10 +85,11 @@
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">concat</span><span class="p">,</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">read_csv</span>
 
 
 <div class="viewcode-block" id="get_total_ms"><a class="viewcode-back" href="../../storedata.html#storedata.helper.get_total_ms">[docs]</a><span class="k">def</span> <span class="nf">get_total_ms</span><span class="p">(</span><span class="n">datetime_obj</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get total number of milliseconds past in the day from datetime object</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get total number of microseconds past in the day from datetime object</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -101,7 +102,7 @@
         <span class="o">+</span> <span class="n">datetime_obj</span><span class="o">.</span><span class="n">second</span> <span class="o">*</span> <span class="mi">1000000</span>
         <span class="o">+</span> <span class="n">datetime_obj</span><span class="o">.</span><span class="n">microsecond</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">microseconds</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">microseconds</span></div>
 
 
 <div class="viewcode-block" id="get_date_time"><a class="viewcode-back" href="../../storedata.html#storedata.helper.get_date_time">[docs]</a><span class="k">def</span> <span class="nf">get_date_time</span><span class="p">():</span>
@@ -113,7 +114,7 @@
 <span class="sd">    date : str</span>
 <span class="sd">        format YYMMDD</span>
 <span class="sd">    time : str</span>
-<span class="sd">        milliseconds</span>
+<span class="sd">        microseconds</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">date</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -179,9 +180,50 @@
             <span class="n">mkdir</span><span class="p">(</span><span class="n">fullpath</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="create_lockfile"><a class="viewcode-back" href="../../storedata.html#storedata.helper.create_lockfile">[docs]</a><span class="k">def</span> <span class="nf">create_lockfile</span><span class="p">(</span><span class="n">lockdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a &quot;.lock&quot; file in a directory</span>
+<div class="viewcode-block" id="read_csv_df"><a class="viewcode-back" href="../../storedata.html#storedata.helper.read_csv_df">[docs]</a><span class="k">def</span> <span class="nf">read_csv_df</span><span class="p">(</span><span class="n">csvpath</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a csv file as a dataframe if the csv path exists.</span>
+<span class="sd">    Otherwise, output empty dataframe.</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    csvpath : str</span>
+<span class="sd">        Full path to csv file</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dataframe : DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dataframe</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">csvpath</span><span class="p">):</span>
+        <span class="n">dataframe</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">csvpath</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataframe</span></div>
+
+
+<div class="viewcode-block" id="set_or_concat_df"><a class="viewcode-back" href="../../storedata.html#storedata.helper.set_or_concat_df">[docs]</a><span class="k">def</span> <span class="nf">set_or_concat_df</span><span class="p">(</span><span class="n">dataframe1</span><span class="p">,</span> <span class="n">dataframe2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Concatenate dataframe2 below dataframe1 if dataframe1 has length greater</span>
+<span class="sd">    than 0. Otherwise, set dataframe1 equal to dataframe2.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataframe1 : DataFrame</span>
+<span class="sd">        Check this df length</span>
+<span class="sd">    dataframe2 : DataFrame</span>
+<span class="sd">        Concatenate this df below or use to set equal</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dataframe1 : DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataframe1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">dataframe1</span> <span class="o">=</span> <span class="n">dataframe2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dataframe1</span> <span class="o">=</span> <span class="n">concat</span><span class="p">([</span><span class="n">dataframe1</span><span class="p">,</span> <span class="n">dataframe2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dataframe1</span></div>
+
+
+<div class="viewcode-block" id="create_lockfile"><a class="viewcode-back" href="../../storedata.html#storedata.helper.create_lockfile">[docs]</a><span class="k">def</span> <span class="nf">create_lockfile</span><span class="p">(</span><span class="n">lockdir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a &quot;.lock&quot; file in a directory</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    lockdir : str</span>

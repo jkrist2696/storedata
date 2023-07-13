@@ -7,7 +7,8 @@ Created on Mon Jul 10 13:39:55 2023
 
 from os import listdir, path, mkdir
 from shutil import copyfile
-from pandas import DataFrame, read_csv, concat
+from pandas import DataFrame, read_csv
+from .helper import read_csv_df, set_or_concat_df
 
 # with ZipFile('spam.zip','w') as myzip:
 #     with myzip.open('eggs.txt','w') as myfile:
@@ -27,28 +28,19 @@ def db_csv(datapath: str, date: str):
     """
     livepath, dbdirpath, dailypath = get_db_paths(datapath)[0:3]
     dbdailypath = path.join(dailypath, f"STOREDATA_{date}.csv")
-    if path.exists(dbdailypath):
-        df_daily = read_csv(dbdailypath)
-    else:
-        df_daily = DataFrame()
+    dbpath = path.join(dbdirpath, "STOREDATA_DB.csv")
+    df_daily = read_csv_df(dbdailypath)
+    df_db = read_csv_df(dbpath)
+    df_new = DataFrame()
     for dirname in listdir(livepath):
         if not path.isdir(path.join(livepath, dirname)):
             continue
         parampath = path.join(livepath, dirname, "STOREDATA_PARAMS.csv")
         df_run = read_csv(parampath, index_col=0, header=None).T
-        if len(df_daily) == 0:
-            df_daily = df_run
-        else:
-            df_daily = concat([df_daily, df_run], axis=0, ignore_index=False)
-
+        df_new = set_or_concat_df(df_new, df_run)
+    df_daily = set_or_concat_df(df_daily, df_new)
+    df_db = set_or_concat_df(df_db, df_new)
     df_daily.to_csv(dbdailypath, index=False, na_rep="NaN")
-    # Make below a separate function
-    dbpath = path.join(dbdirpath, "STOREDATA_DB.csv")
-    if path.exists(dbpath):
-        df_db = read_csv(dbpath)
-        df_db = concat([df_db, df_daily], axis=0, ignore_index=False)
-    else:
-        df_db = df_daily
     df_db.to_csv(dbpath, index=False, na_rep="NaN")
     # Add code here to make a backup of db if merge is successful
 

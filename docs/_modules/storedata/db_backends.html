@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>storedata.db_backends &mdash; storedata 0.0.7 documentation</title>
+  <title>storedata.db_backends &mdash; storedata 0.0.9 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             storedata
           </a>
               <div class="version">
-                0.0.7
+                0.0.9
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -82,7 +82,8 @@
 
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">mkdir</span>
 <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
-<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">read_csv</span><span class="p">,</span> <span class="n">concat</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">read_csv</span>
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">read_csv_df</span><span class="p">,</span> <span class="n">set_or_concat_df</span>
 
 <span class="c1"># with ZipFile(&#39;spam.zip&#39;,&#39;w&#39;) as myzip:</span>
 <span class="c1">#     with myzip.open(&#39;eggs.txt&#39;,&#39;w&#39;) as myfile:</span>
@@ -102,28 +103,19 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">livepath</span><span class="p">,</span> <span class="n">dbdirpath</span><span class="p">,</span> <span class="n">dailypath</span> <span class="o">=</span> <span class="n">get_db_paths</span><span class="p">(</span><span class="n">datapath</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
     <span class="n">dbdailypath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dailypath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;STOREDATA_</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dbdailypath</span><span class="p">):</span>
-        <span class="n">df_daily</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">dbdailypath</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">df_daily</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">dbpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dbdirpath</span><span class="p">,</span> <span class="s2">&quot;STOREDATA_DB.csv&quot;</span><span class="p">)</span>
+    <span class="n">df_daily</span> <span class="o">=</span> <span class="n">read_csv_df</span><span class="p">(</span><span class="n">dbdailypath</span><span class="p">)</span>
+    <span class="n">df_db</span> <span class="o">=</span> <span class="n">read_csv_df</span><span class="p">(</span><span class="n">dbpath</span><span class="p">)</span>
+    <span class="n">df_new</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">dirname</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">livepath</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">livepath</span><span class="p">,</span> <span class="n">dirname</span><span class="p">)):</span>
             <span class="k">continue</span>
         <span class="n">parampath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">livepath</span><span class="p">,</span> <span class="n">dirname</span><span class="p">,</span> <span class="s2">&quot;STOREDATA_PARAMS.csv&quot;</span><span class="p">)</span>
         <span class="n">df_run</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">parampath</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_daily</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">df_daily</span> <span class="o">=</span> <span class="n">df_run</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">df_daily</span> <span class="o">=</span> <span class="n">concat</span><span class="p">([</span><span class="n">df_daily</span><span class="p">,</span> <span class="n">df_run</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
+        <span class="n">df_new</span> <span class="o">=</span> <span class="n">set_or_concat_df</span><span class="p">(</span><span class="n">df_new</span><span class="p">,</span> <span class="n">df_run</span><span class="p">)</span>
+    <span class="n">df_daily</span> <span class="o">=</span> <span class="n">set_or_concat_df</span><span class="p">(</span><span class="n">df_daily</span><span class="p">,</span> <span class="n">df_new</span><span class="p">)</span>
+    <span class="n">df_db</span> <span class="o">=</span> <span class="n">set_or_concat_df</span><span class="p">(</span><span class="n">df_db</span><span class="p">,</span> <span class="n">df_new</span><span class="p">)</span>
     <span class="n">df_daily</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">dbdailypath</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s2">&quot;NaN&quot;</span><span class="p">)</span>
-    <span class="c1"># Make below a separate function</span>
-    <span class="n">dbpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dbdirpath</span><span class="p">,</span> <span class="s2">&quot;STOREDATA_DB.csv&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dbpath</span><span class="p">):</span>
-        <span class="n">df_db</span> <span class="o">=</span> <span class="n">read_csv</span><span class="p">(</span><span class="n">dbpath</span><span class="p">)</span>
-        <span class="n">df_db</span> <span class="o">=</span> <span class="n">concat</span><span class="p">([</span><span class="n">df_db</span><span class="p">,</span> <span class="n">df_daily</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">df_db</span> <span class="o">=</span> <span class="n">df_daily</span>
     <span class="n">df_db</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">dbpath</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na_rep</span><span class="o">=</span><span class="s2">&quot;NaN&quot;</span><span class="p">)</span></div>
     <span class="c1"># Add code here to make a backup of db if merge is successful</span>
 
