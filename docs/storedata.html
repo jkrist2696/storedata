@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>storedata package &mdash; storedata 0.0.6 documentation</title>
+  <title>storedata package &mdash; storedata 0.0.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -34,7 +34,7 @@
             storedata
           </a>
               <div class="version">
-                0.0.6
+                0.0.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -65,6 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#storedata.helper.create_lockfile"><code class="docutils literal notranslate"><span class="pre">create_lockfile()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#storedata.helper.delete_lockfile"><code class="docutils literal notranslate"><span class="pre">delete_lockfile()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#storedata.helper.format_name"><code class="docutils literal notranslate"><span class="pre">format_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#storedata.helper.get_date_time"><code class="docutils literal notranslate"><span class="pre">get_date_time()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#storedata.helper.get_total_ms"><code class="docutils literal notranslate"><span class="pre">get_total_ms()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#storedata.helper.wait_lockfile"><code class="docutils literal notranslate"><span class="pre">wait_lockfile()</span></code></a></li>
 </ul>
@@ -195,7 +196,8 @@ Options = [int, float, text/str, blob, file, zip, json]</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="storedata.db_backends.db_csv">
 <span class="sig-prename descclassname"><span class="pre">storedata.db_backends.</span></span><span class="sig-name descname"><span class="pre">db_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/db_backends.html#db_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.db_backends.db_csv" title="Permalink to this definition"></a></dt>
-<dd><p>Move parameters in temporary data storage for each run to a database stored as a CSV file.</p>
+<dd><p>Move parameters in temporary data storage for each run to a
+database stored as a CSV file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -209,7 +211,8 @@ Options = [int, float, text/str, blob, file, zip, json]</p></li>
 <dl class="py function">
 <dt class="sig sig-object py" id="storedata.db_backends.db_files">
 <span class="sig-prename descclassname"><span class="pre">storedata.db_backends.</span></span><span class="sig-name descname"><span class="pre">db_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/db_backends.html#db_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.db_backends.db_files" title="Permalink to this definition"></a></dt>
-<dd><p>Move parameters in temporary data storage for each run to a cataloged files folder.</p>
+<dd><p>Move parameters in temporary data storage for each run to a
+cataloged files folder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -303,6 +306,22 @@ underscores, and parenthesis.</p>
 <li><p><strong>name</strong> (<em>str</em>) -- Any string to auto-format into a nicer name</p></li>
 <li><p><strong>dtype</strong> (<em>Union</em><em>[</em><em>str</em><em>,</em><em>None</em><em>]</em>) -- Type string to put in brackets after name</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="storedata.helper.get_date_time">
+<span class="sig-prename descclassname"><span class="pre">storedata.helper.</span></span><span class="sig-name descname"><span class="pre">get_date_time</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/storedata/helper.html#get_date_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#storedata.helper.get_date_time" title="Permalink to this definition"></a></dt>
+<dd><p>Get strings for the current date and time.
+The strings can be converted to ints.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>date</strong> (<em>str</em>) -- format YYMMDD</p></li>
+<li><p><strong>time</strong> (<em>str</em>) -- milliseconds</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

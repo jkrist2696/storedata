@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>storedata.helper &mdash; storedata 0.0.6 documentation</title>
+  <title>storedata.helper &mdash; storedata 0.0.7 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             storedata
           </a>
               <div class="version">
-                0.0.6
+                0.0.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -84,6 +84,7 @@
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">mkdir</span><span class="p">,</span> <span class="n">remove</span><span class="p">,</span> <span class="n">getlogin</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 
 
 <div class="viewcode-block" id="get_total_ms"><a class="viewcode-back" href="../../storedata.html#storedata.helper.get_total_ms">[docs]</a><span class="k">def</span> <span class="nf">get_total_ms</span><span class="p">(</span><span class="n">datetime_obj</span><span class="p">):</span>
@@ -101,6 +102,23 @@
         <span class="o">+</span> <span class="n">datetime_obj</span><span class="o">.</span><span class="n">microsecond</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">microseconds</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_date_time"><a class="viewcode-back" href="../../storedata.html#storedata.helper.get_date_time">[docs]</a><span class="k">def</span> <span class="nf">get_date_time</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get strings for the current date and time.</span>
+<span class="sd">    The strings can be converted to ints.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    date : str</span>
+<span class="sd">        format YYMMDD</span>
+<span class="sd">    time : str</span>
+<span class="sd">        milliseconds</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">get_total_ms</span><span class="p">(</span><span class="n">now</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">date</span><span class="p">,</span> <span class="n">time</span></div>
 
 
 <div class="viewcode-block" id="check_live_date"><a class="viewcode-back" href="../../storedata.html#storedata.helper.check_live_date">[docs]</a><span class="k">def</span> <span class="nf">check_live_date</span><span class="p">(</span><span class="n">datepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>

@@ -28,6 +28,7 @@ def get_total_ms(datetime_obj):
     )
     return round(microseconds / 1000)
 
+
 def get_date_time():
     """Get strings for the current date and time.
     The strings can be converted to ints.
@@ -35,9 +36,9 @@ def get_date_time():
     Returns
     -------
     date : str
-        date in format YYMMDD
+        format YYMMDD
     time : str
-        time in milliseconds
+        milliseconds
     """
     now = datetime.now()
     date = now.strftime("%y%m%d")

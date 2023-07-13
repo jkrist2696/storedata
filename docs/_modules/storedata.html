@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>storedata &mdash; storedata 0.0.6 documentation</title>
+  <title>storedata &mdash; storedata 0.0.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             storedata
           </a>
               <div class="version">
-                0.0.6
+                0.0.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -82,8 +82,9 @@
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">getlogin</span><span class="p">,</span> <span class="n">mkdir</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span><span class="p">,</span> <span class="n">rmtree</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">read_csv</span><span class="p">,</span> <span class="n">Series</span>
-<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">get_total_ms</span><span class="p">,</span> <span class="n">format_name</span><span class="p">,</span> <span class="n">create_dirs</span><span class="p">,</span> <span class="n">check_live_date</span>
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">format_name</span><span class="p">,</span> <span class="n">create_dirs</span><span class="p">,</span> <span class="n">check_live_date</span><span class="p">,</span> <span class="n">get_date_time</span>
 <span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">create_lockfile</span><span class="p">,</span> <span class="n">wait_lockfile</span><span class="p">,</span> <span class="n">delete_lockfile</span>
 <span class="kn">from</span> <span class="nn">.db_backends</span> <span class="kn">import</span> <span class="n">db_csv</span><span class="p">,</span> <span class="n">db_files</span>
 
@@ -105,22 +106,25 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_none</span><span class="p">,</span> <span class="n">applname</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
     <span class="n">user</span> <span class="o">=</span> <span class="n">getlogin</span><span class="p">()</span>
-    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">time</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">get_total_ms</span><span class="p">(</span><span class="n">now</span><span class="p">))</span>
-    <span class="n">runinfo</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">datapath</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">}</span>
     <span class="n">relpaths</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;live&quot;</span><span class="p">,</span> <span class="s2">&quot;db&quot;</span><span class="p">,</span> <span class="s2">&quot;db/daily&quot;</span><span class="p">,</span> <span class="s2">&quot;db/artifacts&quot;</span><span class="p">]</span>
     <span class="n">wait_lockfile</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
     <span class="c1"># This could cause an issue if 2 concurrent runs create directories</span>
-    <span class="n">create_dirs</span><span class="p">(</span><span class="n">runinfo</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="n">relpaths</span><span class="p">)</span>
+    <span class="n">create_dirs</span><span class="p">(</span><span class="n">datapath</span><span class="p">,</span> <span class="n">relpaths</span><span class="p">)</span>
     <span class="n">wait_lockfile</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
     <span class="n">run_update</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
+    <span class="n">wait_lockfile</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
+    <span class="n">date</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">get_date_time</span><span class="p">()</span>
+    <span class="n">runinfo</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">datapath</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">}</span>
+    <span class="n">timepath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">datapath</span><span class="p">,</span> <span class="s2">&quot;live&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">timepath</span><span class="p">):</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">date</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">get_date_time</span><span class="p">()</span>
+        <span class="n">runinfo</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="n">datapath</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">time</span><span class="p">}</span>
+        <span class="n">timepath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">datapath</span><span class="p">,</span> <span class="s2">&quot;live&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">mkdir</span><span class="p">(</span><span class="n">timepath</span><span class="p">)</span>
     <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;date_time(yymmdd_ms)&quot;</span><span class="p">,</span> <span class="s2">&quot;application&quot;</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">]</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">runinfo</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">runinfo</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span> <span class="n">applname</span><span class="p">,</span> <span class="n">user</span><span class="p">]</span>
     <span class="n">dtypes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">]</span>
-    <span class="n">wait_lockfile</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
-    <span class="n">timepath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">runinfo</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">],</span> <span class="s2">&quot;live&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">runinfo</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">mkdir</span><span class="p">(</span><span class="n">timepath</span><span class="p">)</span>
     <span class="n">save_data</span><span class="p">(</span><span class="n">timepath</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">timepath</span></div>
 
@@ -152,7 +156,7 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">format_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dtypes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">paramfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">dtypes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;blob&quot;</span><span class="p">,</span> <span class="s2">&quot;zip&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">dtypes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;blob&quot;</span><span class="p">,</span> <span class="s2">&quot;zip&quot;</span><span class="p">]:</span>
                 <span class="k">continue</span>
             <span class="n">_none</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             <span class="n">copypath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">runpath</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
@@ -194,7 +198,7 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataframe</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">cols</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="p">]</span>
-    <span class="n">nf_inds</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))</span> <span class="k">if</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">found_inds</span><span class="p">]</span>
+    <span class="n">nf_inds</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))</span> <span class="k">if</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">found_inds</span><span class="p">]</span>
     <span class="n">nf_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Series</span><span class="p">(</span><span class="n">names</span><span class="p">)[</span><span class="n">nf_inds</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nf_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>

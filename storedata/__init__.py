@@ -8,9 +8,9 @@ Created on Fri Jul  7 03:06:13 2023
 from os import path, getlogin, mkdir
 from datetime import datetime
 from shutil import copyfile, rmtree
-from pandas import read_csv, Series
 from time import sleep
-from .helper import get_total_ms, format_name, create_dirs, check_live_date, get_date_time
+from pandas import read_csv, Series
+from .helper import format_name, create_dirs, check_live_date, get_date_time
 from .helper import create_lockfile, wait_lockfile, delete_lockfile
 from .db_backends import db_csv, db_files
 
@@ -124,7 +124,7 @@ def get_data(datapath: str, names: list[str]):
         for i, col in enumerate(dataframe.columns)
         if name.lower() == cols[i].lower()
     ]
-    nf_inds = [j for j in range(len(names)) if j not in found_inds]
+    nf_inds = [str(j) for j in range(len(names)) if j not in found_inds]
     nf_names = list(Series(names)[nf_inds])
     if len(nf_names) > 0:
         raise KeyError(
