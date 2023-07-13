@@ -9,7 +9,8 @@ from os import path, getlogin, mkdir
 from datetime import datetime
 from shutil import copyfile, rmtree
 from pandas import read_csv, Series
-from .helper import get_total_ms, format_name, create_dirs, check_live_date
+from time import sleep
+from .helper import get_total_ms, format_name, create_dirs, check_live_date, get_date_time
 from .helper import create_lockfile, wait_lockfile, delete_lockfile
 from .db_backends import db_csv, db_files
 
@@ -31,22 +32,25 @@ def create_run(datapath: str) -> str:
     """
     _none, applname = path.split(datapath)
     user = getlogin()
-    now = datetime.now()
-    date = now.strftime("%y%m%d")
-    time = str(get_total_ms(now))
-    runinfo = {"path": datapath, "date": date, "time": time}
     relpaths = ["", "live", "db", "db/daily", "db/artifacts"]
     wait_lockfile(datapath)
     # This could cause an issue if 2 concurrent runs create directories
-    create_dirs(runinfo["path"], relpaths)
+    create_dirs(datapath, relpaths)
     wait_lockfile(datapath)
     run_update(datapath)
+    wait_lockfile(datapath)
+    date, time = get_date_time()
+    runinfo = {"path": datapath, "date": date, "time": time}
+    timepath = path.join(datapath, "live", f"{time}")
+    while path.exists(timepath):
+        sleep(0.01)
+        date, time = get_date_time()
+        runinfo = {"path": datapath, "date": date, "time": time}
+        timepath = path.join(datapath, "live", f"{time}")
+    mkdir(timepath)
     names = ["date_time(yymmdd_ms)", "application", "user"]
     values = [runinfo["date"] + runinfo["time"], applname, user]
     dtypes = ["int", "text", "text"]
-    wait_lockfile(datapath)
-    timepath = path.join(runinfo["path"], "live", f"{runinfo['time']}")
-    mkdir(timepath)
     save_data(timepath, names, values, dtypes)
     return timepath
 

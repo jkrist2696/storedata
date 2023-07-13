@@ -9,6 +9,7 @@ from re import sub
 from os import path, mkdir, remove, getlogin
 from time import sleep
 from typing import Union
+from datetime import datetime
 
 
 def get_total_ms(datetime_obj):
@@ -26,6 +27,22 @@ def get_total_ms(datetime_obj):
         + datetime_obj.microsecond
     )
     return round(microseconds / 1000)
+
+def get_date_time():
+    """Get strings for the current date and time.
+    The strings can be converted to ints.
+
+    Returns
+    -------
+    date : str
+        date in format YYMMDD
+    time : str
+        time in milliseconds
+    """
+    now = datetime.now()
+    date = now.strftime("%y%m%d")
+    time = str(get_total_ms(now))
+    return date, time
 
 
 def check_live_date(datepath: str) -> int:
